@@ -1,0 +1,30 @@
+services:
+  ciitm-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    restart: unless-stopped
+    container_name: ciitm-college-website
+
+  # Optional: Add a development service
+  ciitm-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NODE_ENV=development
+    command: npm run dev
+    container_name: ciitm-dev
+    profiles:
+      - dev
